@@ -14,7 +14,6 @@ class Album
 
 
   def save()
-
     sql = "
       INSERT INTO albums (
         artist_id,
@@ -22,8 +21,8 @@ class Album
         genre
       )
       VALUES ($1, $2, $3)
-      RETURNING id;"
-
+      RETURNING id;
+    "
     values = [
       @artist_id,
       @title,
@@ -33,12 +32,10 @@ class Album
     result = SqlRunner.run(sql, values)
 
     @id = result[0]["id"].to_i()
-
   end
 
 
   def self.all()
-
     sql = "SELECT * FROM albums;"
 
     results = SqlRunner.run(sql)
@@ -48,16 +45,14 @@ class Album
     end
 
     return albums
-
   end
 
 
   def artist()
-
     sql = "
       SELECT * FROM artists
-      WHERE id = $1;"
-
+      WHERE id = $1;
+    "
     results = SqlRunner.run(sql, [@artist_id])
 
     artist = results.map do |artist_hash|
@@ -65,21 +60,25 @@ class Album
     end
 
     return artist
-
   end
 
 
   def self.delete_all()
-
     sql = "DELETE FROM albums;"
-
     SqlRunner.run(sql)
+  end
 
+
+  def delete()
+    sql = "
+      DELETE FROM albums
+      WHERE id = $1;
+    "
+    SqlRunner.run(sql, [@id])
   end
 
 
   def update()
-
     sql = "
       UPDATE albums
       SET (
@@ -87,18 +86,28 @@ class Album
         title,
         genre
       ) = ($1, $2, $3)
-      WHERE id = $4;"
-
+      WHERE id = $4;
+    "
     values = [
       @artist_id,
       @title,
       @genre,
       @id
     ]
-
-
     SqlRunner.run(sql, values)
+  end
 
+
+  def self.find(id)
+    sql = "
+      SELECT * FROM albums
+      WHERE id = $1
+    "
+    result = SqlRunner.run(sql, [id])
+
+    album = Album.new(result[0])
+
+    return album
   end
 
 

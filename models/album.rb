@@ -12,7 +12,6 @@ class Album
     @genre = options["genre"]
   end
 
-
   def save()
     sql = "
       INSERT INTO albums (
@@ -30,14 +29,11 @@ class Album
     ]
 
     result = SqlRunner.run(sql, values)
-
     @id = result[0]["id"].to_i()
   end
 
-
   def self.all()
     sql = "SELECT * FROM albums;"
-
     results = SqlRunner.run(sql)
 
     albums = results.map do |album_hash|
@@ -46,7 +42,6 @@ class Album
 
     return albums
   end
-
 
   def artist()
     sql = "
@@ -62,12 +57,10 @@ class Album
     return artist
   end
 
-
   def self.delete_all()
     sql = "DELETE FROM albums;"
     SqlRunner.run(sql)
   end
-
 
   def delete()
     sql = "
@@ -76,7 +69,6 @@ class Album
     "
     SqlRunner.run(sql, [@id])
   end
-
 
   def update()
     sql = "
@@ -97,7 +89,6 @@ class Album
     SqlRunner.run(sql, values)
   end
 
-
   def self.find(id)
     sql = "
       SELECT * FROM albums
@@ -106,9 +97,7 @@ class Album
     result = SqlRunner.run(sql, [id])
 
     album = Album.new(result[0])
-
     return album
   end
-
 
 end

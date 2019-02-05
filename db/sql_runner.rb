@@ -7,17 +7,14 @@ class SqlRunner
       db = PG.connect({
         dbname: 'music_collection',
         host: 'localhost'
-        })
-
-        db.prepare('query', sql)
-        results = db.exec_prepared('query', values)
-
+      })
+      db.prepare('query', sql)
+      results = db.exec_prepared('query', values)
     ensure
       db.close() if db != nil
     end
 
     return results
-
   end
 
 end
